@@ -1,4 +1,4 @@
-# Laowangba PM Prototype Skill
+# PM Prototype Skill
 
 一个用于生成 B/C 端产品原型的 Codex Skill，重点面向 Figma 可编辑 UI 原型。
 
