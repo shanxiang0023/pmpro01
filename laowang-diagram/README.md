@@ -1,4 +1,4 @@
-# laowang-diagram
+# pm-diagram
 
 产品经理业务流程与框架图 Agent Skill：把**多角色业务链路**抽象成**标准泳道流程图 + 架构分层说明**。兼容 Cursor、Codex、Claude Code 等支持 Agent Skills 的运行时。
 
