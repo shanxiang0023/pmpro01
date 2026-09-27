@@ -1,0 +1,67 @@
+meta:
+  page_id: checkout
+  page_name: 开通确认
+  surface: c_end
+  page_type: c_form
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P04-开通确认"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 确认开通
+  show_back: true
+regions:
+  - id: topbar
+    type: topbar
+    label: 顶部导航
+    layout:
+      direction: row
+      gap: 8
+      padding: 16
+    components:
+      - kind: text
+        label: 标题
+        sample_value: 确认开通
+  - id: form_section
+    type: form_section
+    label: 开通信息
+    layout:
+      direction: column
+      gap: 12
+      padding: 16
+    components:
+      - kind: list_item
+        label: 已选套餐
+        sample_value: 年卡会员 199 元
+      - kind: list_item
+        label: 优惠
+        sample_value: 首年立减 20 元
+      - kind: list_item
+        label: 支付方式
+        sample_value: 微信支付
+      - kind: list_item
+        label: 协议
+        sample_value: 我已阅读并同意会员服务协议
+  - id: bottom_cta
+    type: bottom_cta
+    label: 确认支付
+    layout:
+      direction: row
+      gap: 12
+      padding: 16
+    constraints:
+      primary_actions_max: 1
+    components:
+      - kind: button
+        label: 确认支付 179 元
+        variant: primary
+states:
+  - id: agreement-unchecked
+    label: 未勾选协议
+    description: CTA 保持可见，点击后提示先勾选协议

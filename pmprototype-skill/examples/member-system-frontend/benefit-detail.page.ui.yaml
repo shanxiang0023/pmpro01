@@ -1,0 +1,85 @@
+meta:
+  page_id: benefit-detail
+  page_name: 权益详情
+  surface: c_end
+  page_type: c_detail
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P03-权益详情"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 权益详情
+  show_back: true
+regions:
+  - id: topbar
+    type: topbar
+    label: 顶部导航
+    layout:
+      direction: row
+      gap: 8
+      padding: 16
+    components:
+      - kind: text
+        label: 标题
+        sample_value: 权益详情
+  - id: media_header
+    type: media_header
+    label: 权益头部
+    layout:
+      direction: column
+      gap: 8
+      padding: 16
+    components:
+      - kind: image
+        label: 权益图标
+      - kind: text
+        label: 权益名称
+        sample_value: 会员专属内容
+  - id: summary_strip
+    type: summary_strip
+    label: 适用范围
+    layout:
+      direction: column
+      gap: 8
+      padding: 16
+    components:
+      - kind: text
+        label: 适用范围
+        sample_value: 开通后立即生效，可用于全部会员内容
+  - id: info_sections
+    type: info_sections
+    label: 使用说明
+    layout:
+      direction: column
+      gap: 12
+      padding: 16
+    components:
+      - kind: list_item
+        label: 使用方式
+        sample_value: 进入内容页自动识别会员身份
+      - kind: list_item
+        label: 规则说明
+        sample_value: 部分限时活动不可叠加
+  - id: bottom_cta
+    type: bottom_cta
+    label: 开通会员
+    layout:
+      direction: row
+      gap: 12
+      padding: 16
+    constraints:
+      primary_actions_max: 1
+    components:
+      - kind: button
+        label: 开通会员
+        variant: primary
+states:
+  - id: unavailable
+    label: 权益不可用
+    description: 已下线或暂不支持时展示灰态说明

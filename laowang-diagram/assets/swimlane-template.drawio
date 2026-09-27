@@ -1,0 +1,61 @@
+<mxfile host="app.diagrams.net" agent="laowang-diagram" version="24.0.0" type="device">
+  <diagram id="swimlane-template" name="跨角色泳道流程图模板">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="lane1" value="角色一" style="swimlane;horizontal=1;startSize=30;fillColor=#EAF2FF;strokeColor=#3B82F6;fontColor=#1E3A8A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="1400" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane2" value="角色二" style="swimlane;horizontal=1;startSize=30;fillColor=#E9F9EF;strokeColor=#10B981;fontColor=#065F46;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="220" width="1400" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane3" value="角色三" style="swimlane;horizontal=1;startSize=30;fillColor=#FFF4E5;strokeColor=#F59E0B;fontColor=#92400E;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="1400" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane4" value="系统" style="swimlane;horizontal=1;startSize=30;fillColor=#F3F4F6;strokeColor=#6B7280;fontColor=#1F2937;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="500" width="1400" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n1" value="第一个动作" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#3B82F6;fontColor=#1E3A8A;" vertex="1" parent="lane1">
+          <mxGeometry x="140" y="50" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" value="第二个动作" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#3B82F6;fontColor=#1E3A8A;" vertex="1" parent="lane1">
+          <mxGeometry x="540" y="50" width="160" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n3" value="判断条件?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF4E5;strokeColor=#F59E0B;fontColor=#92400E;" vertex="1" parent="lane2">
+          <mxGeometry x="340" y="40" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="n4" value="正常处理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#10B981;fontColor=#065F46;" vertex="1" parent="lane2">
+          <mxGeometry x="540" y="50" width="160" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n5" value="异常处理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E5;strokeColor=#F59E0B;fontColor=#92400E;dashed=1;" vertex="1" parent="lane3">
+          <mxGeometry x="740" y="50" width="160" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="n6" value="系统自动动作" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#6B7280;fontColor=#1F2937;" vertex="1" parent="lane4">
+          <mxGeometry x="540" y="50" width="160" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#1F2937;" edge="1" parent="1" source="n1" target="n3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="满足条件" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#1F2937;" edge="1" parent="1" source="n3" target="n4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#1F2937;" edge="1" parent="1" source="n4" target="n2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="超时未处理" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;strokeColor=#F59E0B;" edge="1" parent="1" source="n3" target="n6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="自动兜底" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;strokeColor=#F59E0B;" edge="1" parent="1" source="n6" target="n5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

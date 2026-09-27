@@ -1,0 +1,52 @@
+%% 跨角色泳道流程图模板（laowang-diagram）
+%% 用法：复制本文件，替换角色名与节点；写完跑 scripts/check_mermaid.py 自检
+%% 约定：节点 ID 用 ASCII，中文只出现在标签与泳道名里；异常路径用虚线
+
+flowchart TD
+    Start(["触发事件"]) --> A1
+
+    subgraph L1["角色一"]
+        direction LR
+        A1["第一个动作"]
+        A2["第二个动作"]
+    end
+
+    subgraph L2["角色二"]
+        direction LR
+        B1{"判断条件?"}
+        B2["正常处理"]
+    end
+
+    subgraph L3["角色三"]
+        direction LR
+        C1["异常处理"]
+    end
+
+    subgraph L4["系统"]
+        direction LR
+        S1["系统自动动作"]
+    end
+
+    %% 主干：实线
+    A1 --> B1
+    B1 -->|"满足条件"| B2
+    B2 --> A2
+    A2 --> Finish(["流程结束"])
+
+    %% 异常：虚线
+    B1 -.->|"超时未处理"| S1
+    S1 -.->|"自动兜底"| C1
+    C1 -.-> Finish
+
+    %% 语义配色（固定四组，含义不要串）
+    classDef start fill:#E9F9EF,stroke:#10B981,color:#065F46
+    classDef role fill:#EAF2FF,stroke:#3B82F6,color:#1E3A8A
+    classDef sys fill:#F3F4F6,stroke:#6B7280,color:#1F2937
+    classDef warn fill:#FFF4E5,stroke:#F59E0B,color:#92400E
+    classDef risk fill:#FDECEC,stroke:#EF4444,color:#991B1B
+
+    class Start,Finish start
+    class A1,A2,B2 role
+    class B1 warn
+    class S1 sys
+    class C1 risk

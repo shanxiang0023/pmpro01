@@ -1,0 +1,63 @@
+meta:
+  page_id: detail
+  page_name: 商品详情
+  surface: c_end
+  page_type: c_detail
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P03-商品详情"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 商品详情
+  show_back: true
+regions:
+  - id: product_hero
+    type: media_header
+    label: 商品视觉
+    layout: { direction: column, gap: 8, padding: 16 }
+    components:
+      - kind: image
+        label: 商品头图
+      - kind: tag
+        label: AI识别同款 96%
+  - id: price_summary
+    type: summary_strip
+    label: 价格摘要
+    layout: { direction: column, gap: 8, padding: 16 }
+    components:
+      - kind: text
+        label: 券后 ¥7,699，比常见价低 5.2%
+      - kind: tag
+        label: 建议今天买
+  - id: offers_compare
+    type: card_list
+    label: 平台报价对比
+    layout: { direction: column, gap: 12, padding: 16 }
+    components:
+      - kind: list_item
+        label: 报价对比卡
+  - id: trend_section
+    type: chart_card
+    label: 价格趋势
+    layout: { direction: column, gap: 12, padding: 16 }
+    components:
+      - kind: text
+        label: 30天价格低点
+  - id: bottom_cta
+    type: bottom_cta
+    label: 底部行动
+    layout: { direction: row, gap: 12, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: button
+        label: 订阅
+        variant: secondary
+      - kind: button
+        label: 去淘宝买
+        variant: primary

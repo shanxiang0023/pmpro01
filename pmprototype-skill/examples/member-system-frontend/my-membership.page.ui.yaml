@@ -1,0 +1,77 @@
+meta:
+  page_id: my-membership
+  page_name: 我的会员
+  surface: c_end
+  page_type: c_profile
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P05-我的会员"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 我的会员
+  nav_items:
+    - label: 首页
+      active: false
+      icon: home
+    - label: 套餐
+      active: false
+      icon: card
+    - label: 我的
+      active: true
+      icon: user
+regions:
+  - id: profile_header
+    type: profile_header
+    label: 会员资料
+    layout:
+      direction: column
+      gap: 12
+      padding: 16
+    components:
+      - kind: avatar
+        label: 用户头像
+      - kind: text
+        label: 会员状态
+        sample_value: 年卡会员 · 2027-07-09 到期
+  - id: menu_list
+    type: menu_list
+    label: 会员菜单
+    layout:
+      direction: column
+      gap: 8
+      padding: 16
+    components:
+      - kind: list_item
+        label: 会员订单
+      - kind: list_item
+        label: 发票与抬头
+      - kind: list_item
+        label: 兑换码
+      - kind: list_item
+        label: 帮助与客服
+      - kind: list_item
+        label: 会员服务协议
+  - id: bottom_tab
+    type: bottom_tab
+    label: 底部导航
+    layout:
+      direction: row
+      gap: 16
+      padding: 8
+    components:
+      - kind: tab
+        label: 首页
+      - kind: tab
+        label: 套餐
+      - kind: tab
+        label: 我的
+states:
+  - id: expired
+    label: 已过期
+    description: 状态卡切换为续费提醒和恢复权益入口

@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI比价前台原型</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #fff;
+      --text: #1a1a1a;
+      --muted: #666;
+      --faint: #999;
+      --line: #ebedf0;
+      --orange: #ff5000;
+      --orange-deep: #e64300;
+      --orange-soft: #fff3ea;
+      --red: #ff1f1f;
+      --yellow: #ffe7b8;
+      --green: #00b578;
+      --shadow: 0 2px 12px rgba(0,0,0,.06);
+      --font: "PingFang SC", "Microsoft YaHei", sans-serif;
+      --mono: "SF Mono", "JetBrains Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f0f2f5;
+      color: var(--text);
+      font-family: var(--font);
+      letter-spacing: 0;
+    }
+
+    .board {
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      align-items: flex-start;
+    }
+
+    .phone-wrap { flex: 0 0 auto; }
+    .frame-title {
+      width: 390px;
+      margin: 0 0 8px;
+      font-size: 14px;
+      line-height: 22px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .phone {
+      width: 390px;
+      height: 844px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 18px 48px rgba(10, 10, 10, .18);
+      position: relative;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+
+    .status {
+      height: 28px;
+      padding: 8px 16px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #222;
+      background: var(--surface);
+    }
+
+    .topbar {
+      height: 52px;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(235,237,240,.8);
+    }
+
+    .back, .scan, .filter, .share {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: #f7f8fa;
+      color: #333;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .brand {
+      color: var(--orange);
+      font-size: 20px;
+      font-weight: 800;
+      margin-right: 2px;
+    }
+
+    .searchbox {
+      min-width: 0;
+      flex: 1;
+      height: 36px;
+      border: 1px solid var(--orange);
+      background: #fff7f2;
+      border-radius: 22px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .screen {
+      height: calc(844px - 28px - 52px);
+      overflow: hidden;
+      padding: 12px 12px 74px;
+    }
+
+    .scroll { height: 100%; overflow: hidden; }
+    .hero {
+      background: linear-gradient(135deg, #ff6a00 0%, #ff3d00 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 116px;
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      right: -22px;
+      top: -28px;
+      width: 120px;
+      height: 120px;
+      border: 22px solid rgba(255,255,255,.18);
+      border-radius: 60px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 800;
+    }
+
+    .hero p, .banner p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      line-height: 20px;
+      opacity: .92;
+    }
+
+    .ai-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.18);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .quick {
+      height: 72px;
+      border-radius: 12px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .quick i, .nav i {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--orange-soft);
+      color: var(--orange);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 16px 2px 8px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 800;
+    }
+
+    .section-head span {
+      font-size: 12px;
+      color: var(--faint);
+    }
+
+    .rank-row {
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .rank {
+      flex: 0 0 116px;
+      border-radius: 12px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 8px;
+    }
+
+    .thumb {
+      width: 100%;
+      height: 96px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .thumb svg { width: 100%; height: 100%; display: block; }
+
+    .rank strong, .product strong, .offer strong {
+      display: block;
+      font-size: 13px;
+      line-height: 18px;
+      height: 36px;
+      overflow: hidden;
+    }
+
+    .price {
+      font-family: var(--mono);
+      color: var(--red);
+      font-weight: 800;
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .price small { font-size: 11px; font-family: var(--font); }
+
+    .feed {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .product {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: var(--shadow);
+      min-height: 238px;
+    }
+
+    .tagline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 4px;
+      background: var(--orange-soft);
+      color: var(--orange-deep);
+      border: 1px solid #ffd5bd;
+      font-size: 11px;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+
+    .tag.green { background: #ecfff8; color: #008f5d; border-color: #c9f4e4; }
+    .tag.gray { background: #f7f8fa; color: #666; border-color: var(--line); }
+
+    .fingerprint {
+      margin-top: 8px;
+      border-radius: 8px;
+      background: #fff8ed;
+      color: #8a3a00;
+      padding: 6px;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    .bottom-nav, .bottom-cta {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 64px;
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      padding: 8px 16px 12px;
+      gap: 8px;
+    }
+
+    .nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      color: #666;
+    }
+
+    .nav.active { color: var(--orange); font-weight: 700; }
+
+    .banner {
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .banner.orange {
+      background: linear-gradient(135deg, #fff4e8, #fff);
+      border: 1px solid #ffd9bf;
+    }
+
+    .verdict {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .score {
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+      display: grid;
+      place-items: center;
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 20px;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .verdict h2, .banner h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 800;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .chip {
+      flex: 0 0 auto;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: #333;
+      font-size: 13px;
+      display: grid;
+      place-items: center;
+    }
+
+    .chip.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .offer-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .offer {
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 10px;
+      position: relative;
+    }
+
+    .platform {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #fff1e8;
+      color: var(--orange);
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .offer .meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .coupon {
+      background: var(--yellow);
+      color: #9b4300;
+      border-radius: 4px;
+      padding: 2px 5px;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    .risk {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .btn {
+      height: 44px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      color: #333;
+      background: #fff;
+      flex: 1;
+    }
+
+    .btn.primary {
+      background: linear-gradient(90deg, #ff7a00, #ff4200);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn.ghost {
+      background: var(--orange-soft);
+      border-color: #ffd5bd;
+      color: var(--orange-deep);
+    }
+
+    .detail-hero {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .big-thumb {
+      height: 230px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f9f9f9, #fff4e8);
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .big-thumb svg { width: 100%; height: 100%; }
+
+    .product-title {
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: 800;
+      margin: 0 0 8px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 20px;
+    }
+
+    .compare-card, .trend-card, .metric-card {
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 36px;
+      border-bottom: 1px solid #f2f3f5;
+      font-size: 13px;
+    }
+
+    .row:last-child { border-bottom: 0; }
+
+    .sparkline {
+      height: 88px;
+      margin-top: 8px;
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(255,80,0,.12), rgba(255,255,255,0)),
+        repeating-linear-gradient(90deg, #fff, #fff 31px, #f4f5f7 32px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sparkline svg { position: absolute; inset: 0; }
+
+    .report-head {
+      border-radius: 18px;
+      padding: 18px;
+      background: #1a1a1a;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .report-head h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .metric-card {
+      margin-top: 0;
+      padding: 12px;
+    }
+
+    .metric-card b {
+      display: block;
+      font-family: var(--mono);
+      color: var(--red);
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .radar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 4px;
+      background: #f1f2f4;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: var(--orange);
+      border-radius: 4px;
+    }
+
+    .profile {
+      border-radius: 18px;
+      padding: 18px;
+      color: #fff;
+      background: linear-gradient(135deg, #ff5000, #ff8f1f);
+      margin-bottom: 12px;
+    }
+
+    .profile h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .saving-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .saving-grid div {
+      background: rgba(255,255,255,.16);
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 11px;
+      line-height: 16px;
+    }
+
+    .saving-grid b {
+      display: block;
+      font-family: var(--mono);
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    .watch-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f2f3f5;
+    }
+
+    .watch-item:last-child { border-bottom: 0; }
+
+    .mini-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: #f7f8fa;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .mini-thumb svg { width: 100%; height: 100%; }
+
+    @media (max-width: 720px) {
+      .board {
+        padding: 0;
+        display: block;
+        overflow: visible;
+        background: var(--bg);
+      }
+      .phone-wrap { display: none; }
+      .phone-wrap:first-child { display: block; }
+      .frame-title { display: none; }
+      .phone {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        border: 0;
+        box-shadow: none;
+      }
+      .screen { height: calc(100vh - 80px); }
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section class="phone-wrap">
+      <p class="frame-title">P01 首页</p>
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="topbar">
+          <div class="brand">比</div>
+          <div class="searchbox">⌕ 搜索全网同款低价</div>
+          <div class="scan">□</div>
+        </div>
+        <div class="screen">
+          <div class="scroll">
+            <div class="hero">
+              <div class="ai-pill">AI省钱播报</div>
+              <h1>今天有 32 个低价机会</h1>
+              <p>你关注的手机、咖啡机、耳机出现跨平台价差，最高可省 ¥421。</p>
+            </div>
+            <div class="quick-grid">
+              <div class="quick"><i>拍</i>拍照比价</div>
+              <div class="quick"><i>券</i>领券中心</div>
+              <div class="quick"><i>降</i>降价提醒</div>
+              <div class="quick"><i>同</i>同款聚合</div>
+            </div>
+            <div class="section-head"><h2>今日值得买</h2><span>AI按省钱率排序</span></div>
+            <div class="rank-row">
+              <article class="rank">
+                <div class="thumb">__HEADPHONE__</div>
+                <strong>降噪耳机 Pro</strong>
+                <div class="price"><small>¥</small>699</div>
+              </article>
+              <article class="rank">
+                <div class="thumb">__COFFEE__</div>
+                <strong>半自动咖啡机</strong>
+                <div class="price"><small>¥</small>1,289</div>
+              </article>
+              <article class="rank">
+                <div class="thumb">__SHOE__</div>
+                <strong>轻跑运动鞋</strong>
+                <div class="price"><small>¥</small>239</div>
+              </article>
+            </div>
+            <div class="section-head"><h2>猜你想比</h2><span>刷新</span></div>
+            <div class="feed">
+              <article class="product">
+                <div class="thumb">__PHONE__</div>
+                <strong>iPhone 16 Pro 256G 国行正品</strong>
+                <div class="tagline"><span class="tag">百亿补贴</span><span class="tag green">同款96%</span></div>
+                <div class="price"><small>券后 ¥</small>7,699</div>
+                <div class="fingerprint">AI：淘宝补贴后最低，售后保障优于低价小店。</div>
+              </article>
+              <article class="product">
+                <div class="thumb">__LAPTOP__</div>
+                <strong>14英寸轻薄本 Ultra 32G</strong>
+                <div class="tagline"><span class="tag">满减300</span><span class="tag gray">明日到</span></div>
+                <div class="price"><small>券后 ¥</small>5,499</div>
+                <div class="fingerprint">AI：近30天低点，等大促预计只低 ¥80。</div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <nav class="bottom-nav">
+          <div class="nav active"><i>首</i>首页</div>
+          <div class="nav"><i>搜</i>搜索</div>
+          <div class="nav"><i>订</i>订阅</div>
+          <div class="nav"><i>我</i>我的</div>
+        </nav>
+      </div>
+    </section>
+
+    <section class="phone-wrap">
+      <p class="frame-title">P02 搜索结果</p>
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="topbar">
+          <div class="back">‹</div>
+          <div class="searchbox">iPhone 16 Pro 256G</div>
+          <div class="filter">筛</div>
+        </div>
+        <div class="screen">
+          <div class="scroll">
+            <div class="banner orange verdict">
+              <div class="score">96</div>
+              <div>
+                <h2>最低券后 ¥7,699</h2>
+                <p>淘宝百亿补贴综合最优，比常见价低 ¥421，建议今天下单。</p>
+              </div>
+            </div>
+            <div class="chips">
+              <div class="chip active">全平台</div>
+              <div class="chip">淘宝</div>
+              <div class="chip">天猫</div>
+              <div class="chip">有券优先</div>
+              <div class="chip">次日达</div>
+            </div>
+            <div class="offer-list">
+              <article class="offer">
+                <div class="platform">淘宝</div>
+                <div>
+                  <strong>百亿补贴 Apple官方授权店</strong>
+                  <div class="meta"><span class="price"><small>¥</small>7,699</span><span class="coupon">券后省421</span></div>
+                  <div class="risk">AI校验：同款高，支持7天无理由，发货时效 24h。</div>
+                </div>
+              </article>
+              <article class="offer">
+                <div class="platform">天猫</div>
+                <div>
+                  <strong>品牌旗舰店 官方标配</strong>
+                  <div class="meta"><span class="price"><small>¥</small>7,899</span><span class="coupon">赠壳膜</span></div>
+                  <div class="risk">AI校验：售后更稳，价格高 ¥200，适合保守购买。</div>
+                </div>
+              </article>
+              <article class="offer">
+                <div class="platform">京东</div>
+                <div>
+                  <strong>自营现货 256G 黑色</strong>
+                  <div class="meta"><span class="price"><small>¥</small>7,959</span><span class="coupon">PLUS券</span></div>
+                  <div class="risk">AI校验：物流最快，低价优势不足。</div>
+                </div>
+              </article>
+              <article class="offer">
+                <div class="platform">拼多</div>
+                <div>
+                  <strong>百亿补贴店铺 成团价</strong>
+                  <div class="meta"><span class="price"><small>¥</small>7,629</span><span class="coupon">低70</span></div>
+                  <div class="risk">AI校验：价格最低但库存波动，店铺服务分偏低。</div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-cta">
+          <div class="btn ghost">订阅降价</div>
+          <div class="btn primary">看AI报告</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="phone-wrap">
+      <p class="frame-title">P03 商品详情</p>
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="topbar">
+          <div class="back">‹</div>
+          <div class="searchbox">商品详情</div>
+          <div class="share">↗</div>
+        </div>
+        <div class="screen">
+          <div class="scroll">
+            <section class="detail-hero">
+              <div class="big-thumb">__PHONE_BIG__</div>
+              <h2 class="product-title">Apple iPhone 16 Pro 256G 黑色 国行正品</h2>
+              <div><span class="tag">AI识别同款 96%</span><span class="tag green">官方授权</span></div>
+              <div class="price"><small>最低券后 ¥</small>7,699</div>
+              <p class="muted">比近30天均价低 5.2%，当前补贴和店铺券可叠加。</p>
+            </section>
+            <section class="compare-card">
+              <div class="section-head" style="margin:0 0 8px"><h2>平台报价对比</h2><span>4个平台</span></div>
+              <div class="row"><span>淘宝百亿补贴</span><b class="price"><small>¥</small>7,699</b></div>
+              <div class="row"><span>天猫旗舰店</span><b>¥7,899</b></div>
+              <div class="row"><span>京东自营</span><b>¥7,959</b></div>
+              <div class="row"><span>拼多多补贴</span><b>¥7,629</b></div>
+            </section>
+            <section class="trend-card">
+              <div class="section-head" style="margin:0"><h2>30天价格趋势</h2><span>低点附近</span></div>
+              <div class="sparkline">
+                <svg viewBox="0 0 338 88" preserveAspectRatio="none">
+                  <path d="M0 58 C42 44 70 56 103 38 S173 36 214 50 S285 28 338 32" fill="none" stroke="#ff5000" stroke-width="4"/>
+                  <circle cx="285" cy="28" r="5" fill="#ff5000"/>
+                </svg>
+              </div>
+              <p class="muted">AI预测：未来7天继续大幅下降概率 23%，若目标价 ¥7,499 可订阅提醒。</p>
+            </section>
+          </div>
+        </div>
+        <div class="bottom-cta">
+          <div class="btn ghost">订阅</div>
+          <div class="btn primary">去淘宝买</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="phone-wrap">
+      <p class="frame-title">P04 AI比价报告</p>
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="topbar">
+          <div class="back">‹</div>
+          <div class="searchbox">AI比价报告</div>
+          <div class="share">↗</div>
+        </div>
+        <div class="screen">
+          <div class="scroll">
+            <section class="report-head">
+              <div class="ai-pill">AI决策结论</div>
+              <h1>现在买，淘宝综合最优</h1>
+              <p>低价、售后和发货三项综合得分最高，拼多多虽低 ¥70，但风险补偿不够。</p>
+            </section>
+            <section class="compare-card">
+              <div class="section-head" style="margin:0"><h2>价格拆解</h2><span>券后价口径</span></div>
+              <div class="breakdown">
+                <div class="metric-card"><span>平台标价</span><b>¥8,199</b></div>
+                <div class="metric-card"><span>店铺券</span><b>-¥200</b></div>
+                <div class="metric-card"><span>平台补贴</span><b>-¥300</b></div>
+                <div class="metric-card"><span>运费</span><b>¥0</b></div>
+              </div>
+            </section>
+            <section class="compare-card">
+              <div class="section-head" style="margin:0"><h2>平台雷达</h2><span>100分制</span></div>
+              <div class="radar">
+                <div>价格优势<div class="bar"><span style="width:92%"></span></div></div>
+                <div>同款可信<div class="bar"><span style="width:96%"></span></div></div>
+                <div>售后保障<div class="bar"><span style="width:88%"></span></div></div>
+                <div>发货时效<div class="bar"><span style="width:84%"></span></div></div>
+              </div>
+            </section>
+            <section class="banner">
+              <h2>风险提示</h2>
+              <p>1. 拼多多最低价库存不稳定；2. 京东价高但物流最快；3. 淘宝券需在 24 小时内使用。</p>
+              <div class="tagline"><span class="tag">券门槛</span><span class="tag">库存波动</span><span class="tag green">同款可信</span></div>
+            </section>
+          </div>
+        </div>
+        <div class="bottom-cta">
+          <div class="btn primary">按 ¥7,499 提醒我</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="phone-wrap">
+      <p class="frame-title">P05 我的清单</p>
+      <div class="phone">
+        <div class="status"><span>9:41</span><span>5G 100%</span></div>
+        <div class="topbar">
+          <div class="brand">比</div>
+          <div class="searchbox">我的省钱清单</div>
+          <div class="scan">设</div>
+        </div>
+        <div class="screen">
+          <div class="scroll">
+            <section class="profile">
+              <div class="ai-pill">老王的省钱档案</div>
+              <h1>本月预计省 ¥486</h1>
+              <p>已监控 18 件商品，3 件到达目标价。</p>
+              <div class="saving-grid">
+                <div><b>18</b>关注</div>
+                <div><b>3</b>降价</div>
+                <div><b>¥1,240</b>累计省</div>
+              </div>
+            </section>
+            <section class="compare-card">
+              <div class="section-head" style="margin:0"><h2>降价提醒</h2><span>管理</span></div>
+              <div class="watch-item">
+                <div class="mini-thumb">__PHONE_MINI__</div>
+                <div>
+                  <strong>iPhone 16 Pro 256G</strong>
+                  <div class="muted">目标价 ¥7,499 · 当前 ¥7,699</div>
+                  <div class="tagline"><span class="tag">差 ¥200</span><span class="tag green">持续监控</span></div>
+                </div>
+              </div>
+              <div class="watch-item">
+                <div class="mini-thumb">__COFFEE_MINI__</div>
+                <div>
+                  <strong>半自动咖啡机</strong>
+                  <div class="muted">已到目标价 · 淘宝券后 ¥1,289</div>
+                  <div class="tagline"><span class="tag green">可买</span><span class="tag">券24h</span></div>
+                </div>
+              </div>
+            </section>
+            <section class="compare-card">
+              <div class="section-head" style="margin:0"><h2>已领优惠</h2><span>5张</span></div>
+              <div class="row"><span>淘宝手机品类券</span><b>-¥200</b></div>
+              <div class="row"><span>家电满减券</span><b>-¥150</b></div>
+              <div class="row"><span>运动户外券</span><b>-¥60</b></div>
+            </section>
+          </div>
+        </div>
+        <nav class="bottom-nav">
+          <div class="nav"><i>首</i>首页</div>
+          <div class="nav"><i>搜</i>搜索</div>
+          <div class="nav active"><i>订</i>订阅</div>
+          <div class="nav"><i>我</i>我的</div>
+        </nav>
+      </div>
+    </section>
+  </main>
+  <script>
+    const assets = {
+      HEADPHONE: '<svg viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="96" fill="#FFF3EA"/><path d="M32 52a28 28 0 0 1 56 0" fill="none" stroke="#FF5000" stroke-width="8" stroke-linecap="round"/><rect x="21" y="50" width="22" height="30" rx="9" fill="#1A1A1A"/><rect x="77" y="50" width="22" height="30" rx="9" fill="#1A1A1A"/><path d="M44 78h32" stroke="#FF8F1F" stroke-width="5" stroke-linecap="round"/></svg>',
+      COFFEE: '<svg viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="96" fill="#FFF8ED"/><rect x="34" y="28" width="44" height="44" rx="10" fill="#FF5000"/><path d="M78 40h9a10 10 0 0 1 0 20h-9" fill="none" stroke="#E64300" stroke-width="7"/><path d="M43 20c-5-8 8-8 3-16M60 20c-5-8 8-8 3-16" stroke="#999" stroke-width="3" stroke-linecap="round"/><rect x="28" y="72" width="62" height="6" rx="3" fill="#1A1A1A"/></svg>',
+      SHOE: '<svg viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="96" fill="#F4FFF9"/><path d="M24 62c20 0 24-18 36-18 12 0 17 18 34 19 7 1 10 6 8 12H22c-5 0-6-13 2-13z" fill="#00B578"/><path d="M42 55h28" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M26 75h76" stroke="#1A1A1A" stroke-width="5" stroke-linecap="round"/></svg>',
+      PHONE: '<svg viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="96" fill="#F7F8FA"/><rect x="38" y="12" width="44" height="72" rx="10" fill="#1A1A1A"/><rect x="43" y="18" width="34" height="58" rx="6" fill="#FFF3EA"/><circle cx="60" cy="79" r="2" fill="#999"/><path d="M50 30h20M50 39h14" stroke="#FF5000" stroke-width="4" stroke-linecap="round"/></svg>',
+      LAPTOP: '<svg viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="96" fill="#F4F7FF"/><rect x="27" y="22" width="66" height="44" rx="5" fill="#1A1A1A"/><rect x="33" y="28" width="54" height="32" rx="2" fill="#DDEBFF"/><path d="M20 72h80l-8 8H28z" fill="#999"/><path d="M49 72h22" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
+      PHONE_BIG: '<svg viewBox="0 0 338 230" xmlns="http://www.w3.org/2000/svg"><rect width="338" height="230" fill="#FFF3EA"/><rect x="122" y="24" width="94" height="170" rx="22" fill="#1A1A1A"/><rect x="134" y="42" width="70" height="128" rx="12" fill="#fff"/><circle cx="169" cy="181" r="5" fill="#999"/><path d="M150 74h38M150 92h28M150 110h46" stroke="#FF5000" stroke-width="8" stroke-linecap="round"/><circle cx="225" cy="56" r="22" fill="#FF5000"/><text x="225" y="62" font-size="18" font-family="PingFang SC" fill="#fff" text-anchor="middle" font-weight="700">省</text></svg>'
+    };
+
+    document.body.innerHTML = document.body.innerHTML
+      .replaceAll('__HEADPHONE__', assets.HEADPHONE)
+      .replaceAll('__COFFEE__', assets.COFFEE)
+      .replaceAll('__SHOE__', assets.SHOE)
+      .replaceAll('__PHONE__', assets.PHONE)
+      .replaceAll('__LAPTOP__', assets.LAPTOP)
+      .replaceAll('__PHONE_BIG__', assets.PHONE_BIG)
+      .replaceAll('__PHONE_MINI__', assets.PHONE)
+      .replaceAll('__COFFEE_MINI__', assets.COFFEE);
+  </script>
+</body>
+</html>

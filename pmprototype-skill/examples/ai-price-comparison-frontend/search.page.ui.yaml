@@ -1,0 +1,75 @@
+meta:
+  page_id: search
+  page_name: 搜索结果
+  surface: c_end
+  page_type: c_list
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P02-搜索结果"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 搜索结果
+  show_back: true
+regions:
+  - id: result_header
+    type: search_header
+    label: 搜索词
+    layout: { direction: row, gap: 8, padding: 16 }
+    components:
+      - kind: input
+        label: iPhone 16 Pro 256G
+      - kind: button
+        label: 筛选
+        variant: secondary
+  - id: ai_low_price
+    type: summary_strip
+    label: AI低价结论
+    layout: { direction: column, gap: 8, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: text
+        label: 当前最低券后价 ¥7,699，可省 ¥421
+      - kind: tag
+        label: 建议今天下单
+  - id: platform_filters
+    type: tabs
+    label: 平台与排序
+    layout: { direction: row, gap: 8, padding: 12 }
+    components:
+      - kind: tab
+        label: 全平台
+      - kind: tab
+        label: 淘宝
+      - kind: tab
+        label: 天猫
+      - kind: tab
+        label: 有券优先
+  - id: offer_list
+    type: card_list
+    label: 报价列表
+    layout: { direction: column, gap: 12, padding: 16 }
+    components:
+      - kind: list_item
+        label: 平台报价卡
+  - id: bottom_cta
+    type: bottom_cta
+    label: 底部行动
+    layout: { direction: row, gap: 12, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: button
+        label: 订阅降价
+        variant: secondary
+      - kind: button
+        label: 看AI报告
+        variant: primary
+states:
+  - id: empty
+    label: 无同款结果
+    description: 推荐改关键词或开启全网监控

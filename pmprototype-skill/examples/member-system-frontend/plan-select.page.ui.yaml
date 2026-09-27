@@ -1,0 +1,78 @@
+meta:
+  page_id: plan-select
+  page_name: 套餐选择
+  surface: c_end
+  page_type: c_list
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P02-套餐选择"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 选择会员套餐
+  show_back: true
+regions:
+  - id: topbar
+    type: topbar
+    label: 顶部导航
+    layout:
+      direction: row
+      gap: 8
+      padding: 16
+    components:
+      - kind: text
+        label: 标题
+        sample_value: 选择会员套餐
+  - id: filter_chips
+    type: filter_chips
+    label: 周期筛选
+    layout:
+      direction: row
+      gap: 8
+      padding: 16
+    components:
+      - kind: tag
+        label: 全部
+      - kind: tag
+        label: 年卡
+      - kind: tag
+        label: 月卡
+  - id: card_list
+    type: card_list
+    label: 套餐卡片
+    layout:
+      direction: column
+      gap: 12
+      padding: 16
+    components:
+      - kind: list_item
+        label: 年卡会员
+        sample_value: 199 元/年 · 推荐
+      - kind: list_item
+        label: 季卡会员
+        sample_value: 68 元/季
+      - kind: list_item
+        label: 月卡会员
+        sample_value: 25 元/月
+  - id: bottom_cta
+    type: bottom_cta
+    label: 去开通
+    layout:
+      direction: row
+      gap: 12
+      padding: 16
+    constraints:
+      primary_actions_max: 1
+    components:
+      - kind: button
+        label: 去开通
+        variant: primary
+states:
+  - id: selected
+    label: 已选择套餐
+    description: 选中套餐以主色描边和推荐标签展示

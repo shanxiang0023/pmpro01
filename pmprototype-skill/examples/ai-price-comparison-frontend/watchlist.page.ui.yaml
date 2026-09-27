@@ -1,0 +1,52 @@
+meta:
+  page_id: watchlist
+  page_name: 我的清单
+  surface: c_end
+  page_type: c_profile
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P05-我的清单"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 我的
+  nav_items:
+    - label: 首页
+      active: false
+    - label: 搜索
+      active: false
+    - label: 订阅
+      active: true
+    - label: 我的
+      active: false
+regions:
+  - id: saving_profile
+    type: summary_strip
+    label: 省钱数据
+    layout: { direction: column, gap: 8, padding: 16 }
+    components:
+      - kind: text
+        label: 本月预计省 ¥486
+  - id: alerts
+    type: card_list
+    label: 降价提醒
+    layout: { direction: column, gap: 12, padding: 16 }
+    components:
+      - kind: list_item
+        label: 提醒商品
+  - id: coupons
+    type: card_list
+    label: 已领券
+    layout: { direction: column, gap: 12, padding: 16 }
+    components:
+      - kind: list_item
+        label: 优惠券
+states:
+  - id: empty
+    label: 未关注商品
+    description: 引导搜索或拍照比价

@@ -1,0 +1,73 @@
+meta:
+  page_id: home
+  page_name: 首页
+  surface: c_end
+  page_type: c_home
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P01-首页"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: AI比价
+  nav_items:
+    - label: 首页
+      active: true
+    - label: 搜索
+      active: false
+    - label: 订阅
+      active: false
+    - label: 我的
+      active: false
+regions:
+  - id: top_search
+    type: search_header
+    label: 顶部搜索
+    layout: { direction: row, gap: 8, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: input
+        label: 搜索全网同款低价
+      - kind: button
+        label: 拍照
+        variant: secondary
+  - id: ai_saving_strip
+    type: summary_strip
+    label: AI省钱播报
+    layout: { direction: row, gap: 12, padding: 12 }
+    components:
+      - kind: text
+        label: 今日已帮你发现 32 个低价机会
+  - id: quick_actions
+    type: icon_grid
+    label: 快捷入口
+    layout: { direction: row, gap: 12, padding: 16 }
+    components:
+      - kind: tag
+        label: 拍照比价
+      - kind: tag
+        label: 领券中心
+      - kind: tag
+        label: 降价提醒
+      - kind: tag
+        label: 同款聚合
+  - id: product_feed
+    type: card_list
+    label: 商品流
+    layout: { direction: column, gap: 12, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: list_item
+        label: 商品卡
+states:
+  - id: loading
+    label: 加载中
+    description: 商品流骨架屏
+  - id: empty
+    label: 空态
+    description: 暂无推荐时引导搜索

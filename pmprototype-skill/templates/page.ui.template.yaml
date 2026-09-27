@@ -1,0 +1,95 @@
+# page.ui.yaml 模板
+# 复制为 {page-id}.page.ui.yaml；Phase 3 填写；anti_slop 仅 PASS 后可写 pass
+
+meta:
+  page_id: example-list          # 与 ia-draft 一致，小写+连字符
+  page_name: 示例列表页
+  surface: b_end                 # b_end | c_end
+  page_type: b_list_page         # 见 references/page-templates.yaml
+  anti_slop: pass                # 仅 Phase 2 PASS 后填写
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 1440                  # b_end: 1440×900；c_end: 390×844
+    height: 900
+  figma:
+    file_key: ""                 # create_new_file 后回填
+    frame_name: "P01-示例列表页"
+    frame_node_id: ""            # 生成后回填，供 Phase 7 patch
+
+shell:
+  type: b_admin_shell            # b_admin_shell | c_mobile_shell | none
+  title: 示例模块
+  nav_items:
+    - label: 示例列表
+      active: true
+    - label: 其他菜单
+      active: false
+
+regions:
+  - id: page_header
+    type: page_header
+    label: 页头
+    layout:
+      direction: row
+      gap: 16
+      padding: 16
+    components:
+      - kind: text
+        label: 页面标题
+        sample_value: 示例列表
+      - kind: button
+        label: 新建
+        variant: primary
+
+  - id: filter_bar
+    type: filter_bar
+    label: 筛选条
+    layout:
+      direction: row
+      gap: 12
+      padding: 16
+    components:
+      - kind: input
+        label: 关键词
+        width: "240px"
+      - kind: select
+        label: 状态
+      - kind: button
+        label: 查询
+        variant: secondary
+      - kind: button
+        label: 重置
+        variant: ghost
+
+  - id: data_table
+    type: data_table
+    label: 数据表
+    layout:
+      direction: column
+      gap: 0
+      padding: 0
+    components:
+      - kind: table_column
+        label: 名称
+        data_key: name
+      - kind: table_column
+        label: 状态
+        data_key: status
+      - kind: table_column
+        label: 更新时间
+        data_key: updated_at
+      - kind: table_column
+        label: 操作
+        data_key: actions
+
+states:
+  - id: empty
+    label: 空态
+    description: 无数据时展示空状态文案与引导按钮
+  - id: loading
+    label: 加载中
+    description: 骨架屏或 loading
+
+# catalog_map:                    # 有设计系统时取消注释
+#   Button/Primary: "node-id"
+#   Input/Default: "node-id"

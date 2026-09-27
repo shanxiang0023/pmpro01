@@ -1,0 +1,61 @@
+meta:
+  page_id: ai-report
+  page_name: AI比价报告
+  surface: c_end
+  page_type: c_detail
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P04-AI比价报告"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: AI比价报告
+  show_back: true
+regions:
+  - id: verdict
+    type: summary_strip
+    label: AI结论
+    layout: { direction: column, gap: 12, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: text
+        label: 现在买，淘宝百亿补贴综合最优
+  - id: price_breakdown
+    type: form_section
+    label: 价格拆解
+    layout: { direction: column, gap: 8, padding: 16 }
+    components:
+      - kind: text
+        label: 标价、券、补贴、运费、会员价
+  - id: platform_radar
+    type: card_list
+    label: 平台雷达
+    layout: { direction: column, gap: 12, padding: 16 }
+    components:
+      - kind: list_item
+        label: 平台维度评分
+  - id: risk_notes
+    type: card_list
+    label: 风险提示
+    layout: { direction: column, gap: 8, padding: 16 }
+    components:
+      - kind: tag
+        label: 券门槛
+      - kind: tag
+        label: 非同款风险
+      - kind: tag
+        label: 发货时效
+  - id: bottom_cta
+    type: bottom_cta
+    label: 目标价订阅
+    layout: { direction: row, gap: 12, padding: 16 }
+    constraints: { primary_actions_max: 1 }
+    components:
+      - kind: button
+        label: 按 ¥7,499 提醒我
+        variant: primary

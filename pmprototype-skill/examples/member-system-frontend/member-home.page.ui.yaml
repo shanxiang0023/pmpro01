@@ -1,0 +1,77 @@
+meta:
+  page_id: member-home
+  page_name: 会员首页
+  surface: c_end
+  page_type: c_home
+  anti_slop: pass
+  design_plan_ref: design-plan.md
+  canvas:
+    width: 390
+    height: 844
+  figma:
+    file_key: ""
+    frame_name: "P01-会员首页"
+    frame_node_id: ""
+shell:
+  type: c_mobile_shell
+  title: 会员中心
+  nav_items:
+    - label: 首页
+      active: true
+      icon: home
+    - label: 套餐
+      active: false
+      icon: card
+    - label: 我的
+      active: false
+      icon: user
+regions:
+  - id: topbar
+    type: topbar
+    label: 顶部导航
+    layout:
+      direction: row
+      gap: 8
+      padding: 16
+    components:
+      - kind: text
+        label: 标题
+        sample_value: 会员中心
+  - id: content_feed
+    type: content_feed
+    label: 会员状态与推荐套餐
+    layout:
+      direction: column
+      gap: 12
+      padding: 16
+    components:
+      - kind: text
+        label: 会员状态
+        sample_value: 当前未开通，开通后解锁 12 项权益
+      - kind: list_item
+        label: 推荐套餐
+        sample_value: 年卡会员 · 低至 0.55 元/天
+      - kind: list_item
+        label: 核心权益
+        sample_value: 专属内容、优先体验、会员折扣、快速服务
+  - id: bottom_tab
+    type: bottom_tab
+    label: 底部导航
+    layout:
+      direction: row
+      gap: 16
+      padding: 8
+    components:
+      - kind: tab
+        label: 首页
+      - kind: tab
+        label: 套餐
+      - kind: tab
+        label: 我的
+states:
+  - id: loading
+    label: 加载中
+    description: 状态卡与套餐卡使用骨架屏
+  - id: member-active
+    label: 已开通
+    description: 首页状态卡切换为到期时间和续费入口

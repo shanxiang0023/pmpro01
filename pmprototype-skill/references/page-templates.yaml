@@ -1,0 +1,163 @@
+# 页型约束 — page.ui.yaml 中 meta.page_type 取值
+
+# 每页必须选一个 page_type；regions 须满足 required，禁止 forbid 项
+
+b_list_page:
+  surface: b_end
+  description: B 端数据列表（筛选 + 表格 + 分页）
+  required_regions:
+    - filter_bar
+    - data_table
+  optional_regions:
+    - page_header
+    - batch_actions
+    - pagination
+  forbid:
+    - kpi_row          # 非 dashboard 禁止
+    - card_list        # C 端组件
+    - bottom_cta       # C 端组件
+    - outer_card_wrap  # 禁止 table 外包大 card
+
+b_detail_page:
+  surface: b_end
+  description: B 端详情（摘要 + Tabs + 面板）
+  required_regions:
+    - summary_strip
+    - tabs
+  optional_regions:
+    - page_header
+    - data_table
+    - form_section
+    - action_bar
+  forbid:
+    - kpi_row
+    - bottom_cta
+    - card_list
+
+b_dashboard:
+  surface: b_end
+  description: B 端工作台 / 概览
+  required_regions:
+    - kpi_row          # 最多 3 个 KPI
+  optional_regions:
+    - page_header
+    - data_table
+    - todo_list
+    - quick_actions
+  forbid:
+    - four_kpi_row     # 禁止 4 等宽 KPI
+    - card_list
+    - bottom_cta
+  notes:
+    kpi_row_max: 3
+
+b_form_page:
+  surface: b_end
+  description: B 端设置 / 配置表单
+  required_regions:
+    - form_section
+  optional_regions:
+    - page_header
+    - action_bar
+  forbid:
+    - data_table       # 除非 brief 明确要求表格型配置
+    - kpi_row
+    - bottom_cta
+
+c_home:
+  surface: c_end
+  description: C 端首页 / 发现
+  required_regions:
+    - content_feed     # 宫格 / 列表 / banner 之一组合
+  optional_regions:
+    - topbar
+    - bottom_tab
+    - search_entry
+  forbid:
+    - sidebar
+    - data_table
+    - kpi_row
+    - filter_bar       # B 端筛选条
+
+c_list:
+  surface: c_end
+  description: C 端列表（卡片流）
+  required_regions:
+    - card_list
+  optional_regions:
+    - topbar
+    - filter_chips     # 轻量标签筛选，非 B 端 filter_bar
+    - bottom_tab
+  forbid:
+    - sidebar
+    - data_table
+    - kpi_row
+
+c_detail:
+  surface: c_end
+  description: C 端详情
+  required_regions:
+    - summary_strip
+    - info_sections
+  optional_regions:
+    - topbar
+    - bottom_cta
+    - media_header
+  forbid:
+    - sidebar
+    - data_table
+    - kpi_row
+    - tabs             # 除非 brief 明确要求多 Tab 详情
+
+c_form:
+  surface: c_end
+  description: C 端表单 / 下单 / 提交
+  required_regions:
+    - form_section
+    - bottom_cta       # 固定底栏主按钮
+  optional_regions:
+    - topbar
+  forbid:
+    - sidebar
+    - data_table
+    - kpi_row
+
+c_profile:
+  surface: c_end
+  description: C 端个人中心 / 设置入口
+  required_regions:
+    - profile_header
+    - menu_list
+  optional_regions:
+    - bottom_tab
+  forbid:
+    - sidebar
+    - data_table
+    - kpi_row
+
+# region 类型目录（yaml regions[].type 取值）
+
+region_types:
+  filter_bar: { surfaces: [b_end] }
+  data_table: { surfaces: [b_end] }
+  kpi_row: { surfaces: [b_end], max_items: 3 }
+  summary_strip: { surfaces: [b_end, c_end] }
+  tabs: { surfaces: [b_end] }
+  form_section: { surfaces: [b_end, c_end] }
+  card_list: { surfaces: [c_end] }
+  bottom_cta: { surfaces: [c_end] }
+  topbar: { surfaces: [c_end] }
+  bottom_tab: { surfaces: [c_end] }
+  page_header: { surfaces: [b_end, c_end] }
+  pagination: { surfaces: [b_end] }
+  batch_actions: { surfaces: [b_end] }
+  action_bar: { surfaces: [b_end] }
+  content_feed: { surfaces: [c_end] }
+  filter_chips: { surfaces: [c_end] }
+  info_sections: { surfaces: [c_end] }
+  media_header: { surfaces: [c_end] }
+  profile_header: { surfaces: [c_end] }
+  menu_list: { surfaces: [c_end] }
+  todo_list: { surfaces: [b_end] }
+  quick_actions: { surfaces: [b_end] }
+  search_entry: { surfaces: [c_end] }

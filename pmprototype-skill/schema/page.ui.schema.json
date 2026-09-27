@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "page.ui.schema.json",
+  "title": "Product Prototype Page UI Spec",
+  "description": "page.ui.yaml 结构校验；Phase 3 生成前须 anti_slop: pass",
+  "type": "object",
+  "required": ["meta", "regions"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "page_id",
+        "page_name",
+        "surface",
+        "page_type",
+        "anti_slop",
+        "design_plan_ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "page_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "与 ia-draft 中 page-id 一致"
+        },
+        "page_name": { "type": "string", "minLength": 1 },
+        "surface": { "type": "string", "enum": ["b_end", "c_end"] },
+        "page_type": {
+          "type": "string",
+          "enum": [
+            "b_list_page",
+            "b_detail_page",
+            "b_dashboard",
+            "b_form_page",
+            "c_home",
+            "c_list",
+            "c_detail",
+            "c_form",
+            "c_profile"
+          ]
+        },
+        "anti_slop": {
+          "type": "string",
+          "enum": ["pass"],
+          "description": "仅 Anti-Slop PASS 后可填 pass"
+        },
+        "design_plan_ref": {
+          "type": "string",
+          "description": "design-plan.md 路径或版本标识"
+        },
+        "figma": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "file_key": { "type": "string" },
+            "frame_name": { "type": "string" },
+            "frame_node_id": { "type": "string" }
+          }
+        },
+        "canvas": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "width": { "type": "integer", "minimum": 320 },
+            "height": { "type": "integer", "minimum": 568 }
+          }
+        }
+      }
+    },
+    "shell": {
+      "type": "object",
+      "description": "页面壳层；B 端侧栏+顶栏，C 端顶栏/底 Tab",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["b_admin_shell", "c_mobile_shell", "none"]
+        },
+        "nav_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label"],
+            "properties": {
+              "label": { "type": "string" },
+              "active": { "type": "boolean" },
+              "icon": { "type": "string" }
+            }
+          }
+        },
+        "title": { "type": "string" },
+        "show_back": { "type": "boolean" }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/region" }
+    },
+    "states": {
+      "type": "array",
+      "description": "可选：空态、加载态、错误态",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "catalog_map": {
+      "type": "object",
+      "description": "设计系统组件 nodeId 映射（search_design_system 后填写）",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "region": {
+      "type": "object",
+      "required": ["id", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "type": { "type": "string" },
+        "label": { "type": "string" },
+        "figma_node_id": { "type": "string" },
+        "components": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/component" }
+        },
+        "layout": {
+          "type": "object",
+          "properties": {
+            "direction": { "type": "string", "enum": ["row", "column"] },
+            "gap": { "type": "integer", "enum": [4, 8, 12, 16, 24, 32, 48] },
+            "padding": { "type": "integer", "enum": [4, 8, 12, 16, 24, 32, 48] }
+          }
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "max_items": { "type": "integer", "minimum": 1 },
+            "primary_actions_max": { "type": "integer", "maximum": 1 }
+          }
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "button",
+            "input",
+            "select",
+            "table_column",
+            "kpi_card",
+            "list_item",
+            "tab",
+            "tag",
+            "avatar",
+            "text",
+            "image",
+            "divider"
+          ]
+        },
+        "label": { "type": "string" },
+        "variant": {
+          "type": "string",
+          "enum": ["primary", "secondary", "ghost", "danger", "link"]
+        },
+        "width": { "type": "string" },
+        "data_key": { "type": "string" },
+        "sample_value": { "type": "string" }
+      }
+    }
+  }
+}
